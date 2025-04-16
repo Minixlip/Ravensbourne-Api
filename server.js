@@ -1,11 +1,10 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const userRoutes = require("./routes/Users");
-const dashboardRoutes = require("./routes/Dashboard");
-const paymentRoutes = require("./routes/Payment");
-const cardRoutes = require("./routes/Card");
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/Users');
+const chatbotRoutes = require('./routes/Chatbot');
+
 // PORT
 const port = process.env.PORT;
 const mongoURI = process.env.MONGO_URI;
@@ -25,10 +24,8 @@ app.use((req, res, next) => {
 app.use(cors());
 
 //routes
-app.use("/api/users", userRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/payment", paymentRoutes);
-app.use("/api/card", cardRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // connect to db
 mongoose
@@ -36,7 +33,7 @@ mongoose
   .then(() => {
     // listen for requests
     app.listen(port, () => {
-      console.log("Connected to DB & listening on port:", port);
+      console.log('Connected to DB & listening on port:', port);
     });
   })
   .catch((error) => {

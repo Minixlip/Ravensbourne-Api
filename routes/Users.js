@@ -10,6 +10,6 @@ router.post('/Login', loginUser);
 
 // Register route
 
-router.post('/Register', createUser);
+router.post('/register', createUser);
 
 module.exports = router;

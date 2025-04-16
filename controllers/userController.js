@@ -24,8 +24,6 @@ const loginUser = async (req, res) => {
       throw Error('Incorrect email');
     }
 
-    const { firstName, surName } = user;
-
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
@@ -33,9 +31,10 @@ const loginUser = async (req, res) => {
     }
 
     const userid = user._id;
+    const username = user.username;
 
     const token = createToken(user._id);
-    res.status(200).json({ emailAddress, token, userid, firstName, surName });
+    res.status(200).json({ emailAddress, token, userid, username });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -45,21 +44,7 @@ const loginUser = async (req, res) => {
 
 // create a new user
 const createUser = async (req, res) => {
-  const {
-    firstName,
-    surName,
-    gender,
-    postCode,
-    city,
-    phoneNumber,
-    emailAddress,
-    dateOfBirthDay,
-    dateOfBirthMonth,
-    dateOfBirthYear,
-    password,
-    graduationYear,
-    streetName,
-  } = req.body;
+  const { username, emailAddress, password } = req.body;
 
   try {
     // validation
@@ -84,25 +69,17 @@ const createUser = async (req, res) => {
     const hash = await bcrypt.hash(password, salt);
     // add doc to DB
     const user = await User.create({
-      firstName,
-      surName,
-      gender,
-      postCode,
-      city,
-      phoneNumber,
+      username,
       emailAddress,
-      dateOfBirthDay,
-      dateOfBirthMonth,
-      dateOfBirthYear,
       password: hash,
-      graduationYear,
-      streetName,
     });
 
     const userid = user._id;
 
     const token = createToken(user._id);
-    res.status(200).json({ emailAddress, token, userid, firstName, surName });
+    res.status(200).json({ emailAddress, token, userid, username });
+
+    console.log('success!');
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
